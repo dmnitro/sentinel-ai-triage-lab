@@ -1,0 +1,22 @@
+let SigninLogs = datatable(TimeGenerated:datetime, UserPrincipalName:string, ResultType:string, IPAddress:string) [
+  // bob: 6 failures then success 5 minutes later from the same IP -> fire, SameIP true
+  datetime(2026-10-20 19:00:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:01:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:02:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:03:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:04:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:05:00), 'bob.lab@lab.onmicrosoft.com', '50053', '203.0.113.7',
+  datetime(2026-10-20 19:10:00), 'bob.lab@lab.onmicrosoft.com', '0', '203.0.113.7',
+  // alice: 6 failures, success 3 hours later -> no fire (outside the 30 minute follow-up)
+  datetime(2026-10-20 15:00:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:01:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:02:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:03:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:04:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:05:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 18:05:00), 'alice.lab@lab.onmicrosoft.com', '0', '198.51.100.4',
+  // carol: an earlier success BEFORE the failures must not count; 2 failures only anyway -> no fire
+  datetime(2026-10-20 12:00:00), 'carol.lab@lab.onmicrosoft.com', '0', '192.0.2.1',
+  datetime(2026-10-20 12:10:00), 'carol.lab@lab.onmicrosoft.com', '50126', '192.0.2.1',
+  datetime(2026-10-20 12:11:00), 'carol.lab@lab.onmicrosoft.com', '50126', '192.0.2.1'
+];

@@ -1,0 +1,21 @@
+// LAB-06 Entra failures then success | MITRE T1110 Brute Force (success = possible T1078, confirm in investigation)
+// Needs: SigninLogs (Entra ID P1 or P2). run 1h, look back 2h.
+// v2 (after review): failures are counted per user per hour, and the success must come within 30 minutes
+// AFTER the last failure of that burst. SameIP tells the analyst whether the success came from a failing source.
+let burst = 1h;
+let followUp = 30m;
+SigninLogs
+| where ResultType in ("50126", "50053")       // wrong password, account locked
+| summarize Failures = count(), FailIPs = make_set(IPAddress, 10),
+            FirstFailure = min(TimeGenerated), LastFailure = max(TimeGenerated)
+            by UserPrincipalName, bin(TimeGenerated, burst)
+| where Failures >= 5
+| join kind=inner (
+    SigninLogs
+    | where ResultType == "0"
+    | project UserPrincipalName, SuccessTime = TimeGenerated, SuccessIP = IPAddress
+  ) on UserPrincipalName
+| where SuccessTime between (LastFailure .. (LastFailure + followUp))
+| summarize arg_min(SuccessTime, *) by UserPrincipalName, FirstFailure
+| extend SameIP = set_has_element(FailIPs, SuccessIP)
+| project UserPrincipalName, Failures, FirstFailure, LastFailure, SuccessTime, SuccessIP, SameIP, FailIPs

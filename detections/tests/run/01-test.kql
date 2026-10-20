@@ -1,0 +1,39 @@
+let SecurityEvent = datatable(TimeGenerated:datetime, EventID:int, Computer:string, IpAddress:string, TargetUserName:string, TargetSid:string, MemberSid:string, MemberName:string, SubjectUserName:string, SubjectLogonId:string, EventData:string, NewProcessName:string, CommandLine:string, Account:string, ParentProcessName:string, Activity:string) [
+  datetime(2026-10-20 19:00:13), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:00:26), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:00:39), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:01:52), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:01:05), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:01:18), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:01:31), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:02:44), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:02:57), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:02:10), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:02:23), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 19:03:36), 4625, 'victim-01', @'-', @'labtarget', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625 - An account failed to log on.',
+  datetime(2026-10-20 18:31:00), 4625, 'victim-01', @'10.0.0.9', @'danut', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625',
+  datetime(2026-10-20 18:32:00), 4625, 'victim-01', @'10.0.0.9', @'danut', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625',
+  datetime(2026-10-20 18:33:00), 4625, 'victim-01', @'10.0.0.9', @'danut', @'', @'', @'', @'', '0x3e7', @'', @'', @'', @'', @'', @'4625',
+  datetime(2026-10-20 19:30:00), 4732, 'victim-01', @'', @'Administrators', @'S-1-5-32-544', @'S-1-5-21-1-1001', @'-', @'labadmin', '0x3e7', @'', @'', @'', @'', @'', @'',
+  datetime(2026-10-20 19:31:00), 4732, 'victim-01', @'', @'Remote Desktop Users', @'S-1-5-32-555', @'S-1-5-21-1-1002', @'-', @'labadmin', '0x3e7', @'', @'', @'', @'', @'', @'',
+  datetime(2026-10-20 20:10:00), 4698, 'victim-01', @'', @'', @'', @'', @'', @'labadmin', '0x3e7', @'<EventData><Data Name="TaskName">\Lab\Updater</Data><Data Name="TaskContent">&lt;Exec&gt;&lt;Command&gt;cmd.exe&lt;/Command&gt;&lt;Arguments&gt;/c whoami&lt;/Arguments&gt;&lt;/Exec&gt;</Data></EventData>', @'', @'', @'', @'', @'',
+  datetime(2026-10-20 20:11:00), 4698, 'victim-01', @'', @'', @'', @'', @'', @'SYSTEM', '0x3e7', @'<EventData><Data Name="TaskName">\Microsoft\Windows\Defrag\ScheduledDefrag</Data><Data Name="TaskContent">cmd.exe /c defrag</Data></EventData>', @'', @'', @'', @'', @'',
+  datetime(2026-10-20 20:12:00), 4698, 'victim-01', @'', @'', @'', @'', @'', @'labadmin', '0x3e7', @'<EventData><Data Name="TaskName">\Lab\Notes</Data><Data Name="TaskContent">notepad.exe C:\notes.txt</Data></EventData>', @'', @'', @'', @'', @'',
+  datetime(2026-10-20 20:20:00), 4688, 'victim-01', @'', @'', @'', @'', @'', @'', '0x3e7', @'', @'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', @'powershell.exe -NoProfile -EncodedCommand VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAiAGwAYQBiACIA', @'VICTIM-01\labadmin', @'C:\Windows\System32\cmd.exe', @'',
+  datetime(2026-10-20 20:20:00), 4688, 'victim-01', @'', @'', @'', @'', @'', @'', '0x3e7', @'', @'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', @'powershell.exe -ec VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAiAGwAYQBiACIA', @'VICTIM-01\labadmin', @'C:\Windows\System32\cmd.exe', @'',
+  datetime(2026-10-20 20:20:00), 4688, 'victim-01', @'', @'', @'', @'', @'', @'', '0x3e7', @'', @'C:\Program Files\PowerShell\7\pwsh.exe', @'pwsh /enc VwByAGkAdABlAC0ATwB1AHQAcAB1AHQAIAAiAGwAYQBiACIA', @'VICTIM-01\labadmin', @'C:\Windows\System32\cmd.exe', @'',
+  datetime(2026-10-20 20:21:00), 4688, 'victim-01', @'', @'', @'', @'', @'', @'', '0x3e7', @'', @'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', @'powershell.exe -ExecutionPolicy Bypass -File C:\scripts\backup.ps1', @'VICTIM-01\labadmin', @'', @'',
+  datetime(2026-10-20 20:22:00), 4688, 'victim-01', @'', @'', @'', @'', @'', @'', '0x3e7', @'', @'C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe', @'powershell.exe -NoProfile -Command Get-Date', @'VICTIM-01\labadmin', @'', @'',
+  datetime(2026-10-20 21:00:00), 1102, 'victim-01', @'', @'', @'', @'', @'', @'', '0x3e7', @'<UserData><LogFileCleared><SubjectUserName>labadmin</SubjectUserName></LogFileCleared></UserData>', @'', @'', @'', @'', @'1102 - The audit log was cleared.'
+];
+
+// LAB-01 Local brute force | MITRE T1110.001 Password Guessing | Severity Medium | run 5m, look back 10m
+// Needs: SecurityEvent 4625 (audit Logon failure). Fires: >=10 failures from one source on one host in 10 minutes.
+SecurityEvent
+| where EventID == 4625
+| summarize FailedAttempts = count(),
+            Accounts = make_set(TargetUserName, 10),
+            FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated)
+            by Computer, IpAddress, bin(TimeGenerated, 10m)
+| where FailedAttempts >= 10
+| summarize Rows = count() | extend Expected = 1 | extend Pass = Rows == Expected

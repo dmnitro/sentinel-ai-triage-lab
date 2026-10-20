@@ -1,0 +1,4 @@
+anthropic>=1.13
+azure-identity
+azure-monitor-query>=2.0
+pytest

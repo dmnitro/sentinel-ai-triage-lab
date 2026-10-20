@@ -1,0 +1,44 @@
+let SigninLogs = datatable(TimeGenerated:datetime, UserPrincipalName:string, ResultType:string, IPAddress:string) [
+  // bob: 6 failures then success 5 minutes later from the same IP -> fire, SameIP true
+  datetime(2026-10-20 19:00:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:01:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:02:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:03:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:04:00), 'bob.lab@lab.onmicrosoft.com', '50126', '203.0.113.7',
+  datetime(2026-10-20 19:05:00), 'bob.lab@lab.onmicrosoft.com', '50053', '203.0.113.7',
+  datetime(2026-10-20 19:10:00), 'bob.lab@lab.onmicrosoft.com', '0', '203.0.113.7',
+  // alice: 6 failures, success 3 hours later -> no fire (outside the 30 minute follow-up)
+  datetime(2026-10-20 15:00:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:01:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:02:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:03:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:04:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 15:05:00), 'alice.lab@lab.onmicrosoft.com', '50126', '198.51.100.4',
+  datetime(2026-10-20 18:05:00), 'alice.lab@lab.onmicrosoft.com', '0', '198.51.100.4',
+  // carol: an earlier success BEFORE the failures must not count; 2 failures only anyway -> no fire
+  datetime(2026-10-20 12:00:00), 'carol.lab@lab.onmicrosoft.com', '0', '192.0.2.1',
+  datetime(2026-10-20 12:10:00), 'carol.lab@lab.onmicrosoft.com', '50126', '192.0.2.1',
+  datetime(2026-10-20 12:11:00), 'carol.lab@lab.onmicrosoft.com', '50126', '192.0.2.1'
+];
+// LAB-06 Entra failures then success | MITRE T1110 Brute Force (success = possible T1078, confirm in investigation)
+// Needs: SigninLogs (Entra ID P1 or P2). run 1h, look back 2h.
+// v2 (after review): failures are counted per user per hour, and the success must come within 30 minutes
+// AFTER the last failure of that burst. SameIP tells the analyst whether the success came from a failing source.
+let burst = 1h;
+let followUp = 30m;
+SigninLogs
+| where ResultType in ("50126", "50053")       // wrong password, account locked
+| summarize Failures = count(), FailIPs = make_set(IPAddress, 10),
+            FirstFailure = min(TimeGenerated), LastFailure = max(TimeGenerated)
+            by UserPrincipalName, bin(TimeGenerated, burst)
+| where Failures >= 5
+| join kind=inner (
+    SigninLogs
+    | where ResultType == "0"
+    | project UserPrincipalName, SuccessTime = TimeGenerated, SuccessIP = IPAddress
+  ) on UserPrincipalName
+| where SuccessTime between (LastFailure .. (LastFailure + followUp))
+| summarize arg_min(SuccessTime, *) by UserPrincipalName, FirstFailure
+| extend SameIP = set_has_element(FailIPs, SuccessIP)
+| project UserPrincipalName, Failures, FirstFailure, LastFailure, SuccessTime, SuccessIP, SameIP, FailIPs
+| summarize Rows = count() | extend Expected = 1 | extend Pass = Rows == Expected

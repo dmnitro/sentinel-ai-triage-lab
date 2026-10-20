@@ -1,0 +1,2 @@
+change_id,approved_utc_from,approved_utc_to,host,description
+CHG-1001,2026-10-20T19:00:00Z,2026-10-20T19:45:00Z,victim-01,Add svc-backup to Administrators for backup agent

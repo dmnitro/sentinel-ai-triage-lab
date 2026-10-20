@@ -1,0 +1,9 @@
+// LAB-01 Local brute force | MITRE T1110.001 Password Guessing | Severity Medium | run 5m, look back 10m
+// Needs: SecurityEvent 4625 (audit Logon failure). Fires: >=10 failures from one source on one host in 10 minutes.
+SecurityEvent
+| where EventID == 4625
+| summarize FailedAttempts = count(),
+            Accounts = make_set(TargetUserName, 10),
+            FirstSeen = min(TimeGenerated), LastSeen = max(TimeGenerated)
+            by Computer, IpAddress, bin(TimeGenerated, 10m)
+| where FailedAttempts >= 10

@@ -1,0 +1,9 @@
+// LAB-04 Encoded PowerShell | MITRE T1059.001 PowerShell | Severity Medium
+// Needs: SecurityEvent 4688 with command line logging on.
+// v2 (after review): match the behaviour, not a list of spellings. Any switch starting with "e"
+// (-e, -ec, -enc, -EncodedCommand ...), written with -, / or a unicode dash, followed by a base64 blob.
+SecurityEvent
+| where EventID == 4688
+| where NewProcessName endswith @"\powershell.exe" or NewProcessName endswith @"\pwsh.exe"
+| where CommandLine matches regex @"(?i)(\s|^)[-/\x{2013}\x{2014}]e[a-z]*\s+[a-z0-9+/=]{20,}"
+| project TimeGenerated, Computer, Account, CommandLine, ParentProcessName

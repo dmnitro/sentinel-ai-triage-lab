@@ -1,0 +1,9 @@
+// LAB-03 Suspicious scheduled task | MITRE T1053.005 Scheduled Task | Severity Medium
+// Needs: SecurityEvent 4698 (audit Other Object Access Events). Check the raw EventData XML in your tenant.
+SecurityEvent
+| where EventID == 4698
+| extend TaskName    = extract(@'<Data Name="TaskName">([^<]+)</Data>', 1, EventData),
+         TaskContent = extract(@'<Data Name="TaskContent">([\s\S]*?)</Data>', 1, EventData)
+| where not(TaskName startswith @"\Microsoft\")
+| where TaskContent has_any ("powershell", "cmd.exe", "rundll32", "mshta", "wscript", @"\Temp\", "AppData")
+| project TimeGenerated, Computer, TaskName, CreatedBy = SubjectUserName, TaskContent

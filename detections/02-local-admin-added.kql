@@ -1,0 +1,7 @@
+// LAB-02 Account added to local Administrators | MITRE T1098 Account Manipulation | Severity High
+// Needs: SecurityEvent 4732 (audit Security Group Management). S-1-5-32-544 = built-in Administrators.
+SecurityEvent
+| where EventID == 4732
+| where TargetSid == "S-1-5-32-544"
+| project TimeGenerated, Computer, MemberSid, MemberName,
+          AddedBy = SubjectUserName, SubjectLogonId
